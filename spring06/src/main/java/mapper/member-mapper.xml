@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-Mapper.dtd">
+<mapper namespace="Member">   
+   <!-- resultMap은 db컬럼명과 vo의 필드값이 안 맞을 때 사용한다. -->
+   <resultMap id="resultMember" type="Member"> 
+      <id property="id" column="ID"/>   <!-- 프라이머리키 -->
+      <result property="passwd" column="PASSWD"/>
+      <result property="name" column="NAME"/>
+      <result property="email" column="EMAIL"/>
+      <result property="gender" column="GENDER"/>
+      <result property="age" column="AGE"/>
+      <result property="phone" column="PHONE"/>
+      <result property="address" column="ADDRESS"/>
+      <result property="enrollDate" column="ENROLL_DATE"/>
+   </resultMap>
+
+   <!-- member table의 모든 데이터 select -->
+   <select id="selectMemberAll" resultMap="resultMember">
+   <!-- resultType="Member" resultMap에서 type에 적어줬기 때문에 생략가능-->
+   <!-- id-> 메서드명 resultType = 반환타입 -->
+      SELECT * FROM MEMBER
+   </select>
+   
+   <!-- member 하나만 가져오는 select -->
+   <select id="selectMember" parameterType="string" resultMap="resultMember">
+      <!-- paramterType은 userid의 타입을 말함 -->
+      SELECT * FROM MEMBER WHERE ID = #{userid}
+   </select>
+   
+   <!-- member insert -->
+   <insert id="insertMember" parameterType="Member">
+      INSERT INTO MEMBER (ID,PASSWD,NAME,GENDER,AGE,ENROLL_DATE)
+      	VALUES (#{id},#{passwd},#{name},#{gender},#{age},SYSDATE)
+   </insert>
+   
+   <!-- member update -->
+   <update id="updateMember">
+      UPDATE MEMBER SET NAME = #{name},
+      					GENDER = #{gender},
+      					AGE = #{age}
+      WHERE ID = #{id}
+   </update>
+   
+    <!-- member delete -->
+   <delete id="deleteMember" parameterType="Member">
+      DELETE FROM MEMBER WHERE ID= #{id}
+   </delete>
+</mapper>
