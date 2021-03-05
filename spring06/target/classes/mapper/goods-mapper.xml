@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-Mapper.dtd">
+<mapper namespace="Goods">
+	<resultMap id="goodsResult" type="Goods">
+		<id property="code" column="CODE" />
+		<result property="name" column="NAME" />
+		<result property="price" column="PRICE" />
+		<result property="color" column="COLOR" />
+		<result property="date" column="REGDATE" />
+	</resultMap>
+	
+	<select id="searchGoosAll" resultMap="goodsResult">
+		SELECT * FROM GOODS
+	</select>
+	
+	<select id="searchGoods" resultMap="goodsResult" parameterType="String">
+		SELECT * FROM GOODS WHERE CODE = #{code}
+	</select>
+	
+	<insert id="insertGoods" parameterType="Goods">
+		INSERT INTO GOODS (CODE,NAME,PRICE,COLOR,REGDATE)
+		VALUES (#{code},
+				#{name},
+				#{price},
+				#{color},
+				SYSDATE)
+	</insert>
+	
+	<update id="updateGoods" parameterType="Goods">
+		UPDATE GOODS SET CODE = #{code},
+						 NAME = #{name},
+						 PRICE = #{price},
+						 COLOR = #{color}
+		WHERE CODE = #{code}
+	</update>
+	
+	<delete id="deleteGoods" parameterType="Goods">
+		DELETE FROM GOODS WHERE CODE = #{code}
+	</delete>
+</mapper>
