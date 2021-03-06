@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-Mapper.dtd">
+<mapper namespace="Board">
+	<resultMap id="resultBoard" type="Board">
+		<!-- prop 는 필드명, column 은 DB 컬럼 명 -->
+		<id property="boardNum" column="BOARD_NUM" />
+		<result property="boardTitle" column="BOARD_TITLE" />
+		<result property="boardWriter" column="BOARD_WRITER" />
+		<result property="boardContent" column="BOARD_CONTENT" />
+		<result property="boardFile" column="BOARD_ORIGINAL_FILENAME" />
+		<result property="readCount" column="BOARD_READCOUNT" />
+		<result property="regDate" column="BOARD_DATE" />
+	</resultMap>
+	<!-- 1. ROWNUM을 사용하는 경우 -->
+	<select id="selectList" parameterType="BoardPage"
+		resultType="Board" resultMap="resultBoard"> <!-- resultType="arraylist" -->
+  <![CDATA[
+ SELECT * FROM (SELECT ROWNUM RNUM, BOARD_NUM, BOARD_TITLE,
+BOARD_WRITER,
+ BOARD_CONTENT, BOARD_ORIGINAL_FILENAME, BOARD_RENAME_FILENAME,
+BOARD_DATE, BOARD_LEVEL, BOARD_REF, BOARD_REPLY_REF, BOARD_REPLY_SEQ,
+BOARD_READCOUNT
+ FROM (SELECT * FROM BOARD ORDER BY BOARD_REF DESC, BOARD_REPLY_REF DESC,
+ BOARD_LEVEL, BOARD_REPLY_SEQ))
+ WHERE RNUM >= #{start} AND RNUM <= #{end}
+ ]]>
+	</select>
+
+	<select id="listCount" resultType="_int">
+		SELECT COUNT(*) cnt FROM BOARD
+	</select>
+</mapper>
