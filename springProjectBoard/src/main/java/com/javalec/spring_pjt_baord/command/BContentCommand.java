@@ -16,13 +16,13 @@ public class BContentCommand implements BCommand {
 		// TODO Auto-generated method stub
 		
 		Map<String,Object> map = model.asMap();
-		HttpServletRequest request = (HttpServletRequest)map.get("request");
-		String bld = request.getParameter("bld");
+		HttpServletRequest request = (HttpServletRequest) map.get("request");
+		String bId = request.getParameter("bId");
 
 		BDao dao = new BDao();
-		//BDto dto = new BDto(bld);
+		BDto dto = dao.contentView(bId);
 		
-		//model.addAttribute("content_view",dto);
+		model.addAttribute("content_view",dto);
 		
 	}
 
